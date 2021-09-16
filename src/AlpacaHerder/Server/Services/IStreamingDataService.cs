@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 namespace AlpacaHerder.Server.Services {
     public interface IStreamingDataService {
 
-        bool IsConnected { get; set; }
+        bool IsConnected { get; }
 
-        Task<IAlpacaDataSubscription> ConnectAndSubscribeAsync(string symbol, CancellationToken cancellationToken);
+        AuthStatus AuthStatus { get; }
+
+        Task<IAlpacaDataSubscription> SubscribeAsync(string symbol, CancellationToken cancellationToken);
 
         Task<IAlpacaDataSubscription> UnsubscribeAsync(string symbol, CancellationToken cancellationToken);
 
-        IAlpacaDataSubscription GetSubscription(string symbol);
+        Task<IAlpacaDataSubscription> GetSubscriptionAsync(string symbol, CancellationToken cancellationToken);
 
     }
 }

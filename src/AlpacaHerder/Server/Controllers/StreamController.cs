@@ -19,9 +19,10 @@ namespace AlpacaHerder.Server.Controllers {
         }
 
         [HttpGet("{symbol}")]
-        public IActionResult Get(string symbol) {
+        public async Task<IActionResult> Get(string symbol, CancellationToken cancellationToken) {
             try {
-                return Ok(_streamingDataService.GetSubscription(symbol));
+                var subscription = await _streamingDataService.GetSubscriptionAsync(symbol, cancellationToken);
+                return Ok(subscription);
             } catch (Exception ex) {
                 _logger.LogError(ex.ToString());
                 return Problem(ex.Message);
@@ -31,7 +32,7 @@ namespace AlpacaHerder.Server.Controllers {
         [HttpPost("{symbol}")]
         public async Task<IActionResult> Subscribe(string symbol, CancellationToken cancellationToken) {
             try {
-                var subscription = await _streamingDataService.ConnectAndSubscribeAsync(symbol, cancellationToken);
+                var subscription = await _streamingDataService.SubscribeAsync(symbol, cancellationToken);
 
                 return Ok(subscription);
             } catch (Exception ex) {
@@ -45,7 +46,7 @@ namespace AlpacaHerder.Server.Controllers {
             try {
                 var subscription = await _streamingDataService.UnsubscribeAsync(symbol, cancellationToken);
 
-                return Ok(new { subscription.Subscribed });
+                return Ok(subscription);
             } catch (Exception ex) {
                 _logger.LogError(ex.ToString());
                 return Problem(ex.Message);

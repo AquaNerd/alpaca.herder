@@ -29,7 +29,7 @@ namespace AlpacaHerder.Server {
             services.Configure<AlpacaConfig>(Configuration.GetSection(nameof(AlpacaConfig)));
 
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-            services.AddSingleton<IStreamingDataService, StreamingQuoteDataService>();
+            services.AddSingleton<IStreamingDataService, StreamingDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
