@@ -20,7 +20,9 @@ namespace AlpacaHerder.Server {
         public void ConfigureServices(IServiceCollection services) {
 
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services
+                .AddRazorPages()
+                .AddRazorRuntimeCompilation();
 
             services.AddOptions();
             services.Configure<AlpacaConfig>(Configuration.GetSection(nameof(AlpacaConfig)));

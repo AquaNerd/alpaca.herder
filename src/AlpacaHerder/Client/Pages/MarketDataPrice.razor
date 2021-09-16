@@ -2,12 +2,15 @@
 @using AlpacaHerder.Shared
 @inject HttpClient Http
 
-<h3>Market Data</h3>
 
 @if (_marketData == null) {
+    <h3>Market Data</h3>
+
     <span>Price is loading for @Symbol...</span>
 } else {
-    <h3>Last Trade Price for @_marketData.Symbol is currently @_marketData.LastPrice</h3>
+    <h3>Market Data - @Symbol.ToUpper()</h3>
+
+    <span>Last Trade Price is currently @_marketData.LastPrice</span>
 }
 
 @code {
