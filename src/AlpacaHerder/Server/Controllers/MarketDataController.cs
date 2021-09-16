@@ -1,4 +1,5 @@
-﻿using AlpacaHerder.Server.Handlers.MarketData;
+﻿using AlpacaHerder.Server.Controllers.Abstractions;
+using AlpacaHerder.Server.Handlers.MarketData;
 using AlpacaHerder.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace AlpacaHerder.Server.Controllers {
 
     [Route("api/[controller]")]
     [ApiController]
-    public class MarketDataController : Controller {
+    public class MarketDataController : BaseApiController {
 
         private readonly ILogger<MarketDataController> _logger;
         private readonly IMediator _mediator;

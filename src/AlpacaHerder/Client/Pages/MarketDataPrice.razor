@@ -24,10 +24,6 @@
 
     private async void GetPrice() {
         _marketData = await Http.GetFromJsonAsync<MarketData>($"api/marketdata/{_symbol}");
-        await InvokeAsync(() =>
-                {
-
-                    StateHasChanged();
-                });
+        await InvokeAsync(() => StateHasChanged());
     }
 }

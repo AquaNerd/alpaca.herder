@@ -1,4 +1,5 @@
 using AlpacaHerder.Server.Configuration;
+using AlpacaHerder.Server.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@ namespace AlpacaHerder.Server {
             services.Configure<AlpacaConfig>(Configuration.GetSection(nameof(AlpacaConfig)));
 
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            services.AddSingleton<IStreamingDataService, StreamingQuoteDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
