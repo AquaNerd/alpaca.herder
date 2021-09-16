@@ -1,0 +1,22 @@
+﻿@page "/marketdata/{symbol}"
+@using AlpacaHerder.Shared
+@inject HttpClient Http
+
+<h3>Market Data</h3>
+
+@if (_marketData == null) {
+    <span>Price is loading for @Symbol...</span>
+} else {
+    <h3>Last Trade Price for @_marketData.Symbol is currently @_marketData.LastPrice</h3>
+}
+
+@code {
+    [Parameter]
+    public string Symbol { get; set; }
+
+    private MarketData _marketData;
+
+    protected override async Task OnInitializedAsync() {
+        _marketData = await Http.GetFromJsonAsync<MarketData>($"api/marketdata/{Symbol}");
+    }
+}

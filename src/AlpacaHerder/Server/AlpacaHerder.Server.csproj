@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Alpaca.Markets.Extensions" Version="5.1.0" />
+    <PackageReference Include="MediatR" Version="9.0.*" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\AlpacaHerder.Client.csproj" />
+    <ProjectReference Include="..\Shared\AlpacaHerder.Shared.csproj" />
+  </ItemGroup>
+
+
+</Project>
