@@ -1,25 +1,33 @@
-﻿@page "/marketdata/{symbol}"
+﻿@page "/marketdata"
 @using AlpacaHerder.Shared
 @inject HttpClient Http
 
+<h3>Market Data @_headerMessage</h3>
 
-@if (_marketData == null) {
-    <h3>Market Data</h3>
-
-    <span>Price is loading for @Symbol...</span>
-} else {
-    <h3>Market Data - @Symbol.ToUpper()</h3>
-
-    <span>Last Trade Price is currently @_marketData.LastPrice</span>
-}
+<div class="input-group input-group-lg col-sm-3">
+    <input class="form-control" placeholder="symbol" id="symbol" name="symbol" type="text" @bind="_symbol"/>
+    <div class="input-group-append">
+        <button class="btn btn-dark" @onclick="GetPrice">Get Price</button>
+    </div>
+</div>
+<br />
+<div>
+    @if (_marketData != null) {
+        <span>Last Trade Price is currently @_marketData.LastPrice</span>
+    }
+</div>
 
 @code {
-    [Parameter]
-    public string Symbol { get; set; }
-
     private MarketData _marketData;
+    private string _symbol;
+    private string _headerMessage { get => string.IsNullOrWhiteSpace(_symbol) ? "" : $"- {_symbol.ToUpper()}"; }
 
-    protected override async Task OnInitializedAsync() {
-        _marketData = await Http.GetFromJsonAsync<MarketData>($"api/marketdata/{Symbol}");
+    private async void GetPrice() {
+        _marketData = await Http.GetFromJsonAsync<MarketData>($"api/marketdata/{_symbol}");
+        await InvokeAsync(() =>
+                {
+
+                    StateHasChanged();
+                });
     }
 }
