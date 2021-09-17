@@ -1,28 +1,31 @@
 ﻿using Alpaca.Markets;
 using AlpacaHerder.Server.Configuration;
+using AlpacaHerder.Server.Hubs;
+using AlpacaHerder.Shared;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AlpacaHerder.Server.Services {
-    public class StreamingDataService : IStreamingDataService {
+    public class StreamingMinuteBarDataService : IStreamingDataService {
 
-        private readonly ILogger<StreamingDataService> _logger;
+        private readonly ILogger<StreamingMinuteBarDataService> _logger;
         private readonly AlpacaConfig _alpacaConfig;
         private readonly IAlpacaDataStreamingClient _alpacaDataStreamingClient;
         private bool _isConnected;
         private AuthStatus _authStatus;
-        private IAlpacaDataSubscription<IBar> _subscription;
+        private MinuteBarHub _broadcastHub;
 
         bool IStreamingDataService.IsConnected { get => _isConnected; }
         public AuthStatus AuthStatus { get => _authStatus; }
 
-        public StreamingDataService(ILogger<StreamingDataService> logger, IOptions<AlpacaConfig> alpacaConfig) {
+        public StreamingMinuteBarDataService(ILogger<StreamingMinuteBarDataService> logger, IOptions<AlpacaConfig> alpacaConfig) {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _alpacaConfig = alpacaConfig.Value ?? throw new ArgumentNullException(nameof(alpacaConfig));
+            _alpacaConfig = alpacaConfig.Value;// ?? throw new ArgumentNullException(nameof(alpacaConfig));
 
             _alpacaDataStreamingClient = Environments.Paper.GetAlpacaDataStreamingClient(
                     new SecretKey(_alpacaConfig.ApiKey, _alpacaConfig.ApiSecret));
@@ -32,41 +35,45 @@ namespace AlpacaHerder.Server.Services {
             _alpacaDataStreamingClient.Connected += _alpacaDataStreamingClient_Connected;
             _alpacaDataStreamingClient.SocketOpened += _alpacaDataStreamingClient_SocketOpened;
             _alpacaDataStreamingClient.SocketClosed += _alpacaDataStreamingClient_SocketClosed;
+
+            _broadcastHub = new MinuteBarHub();
         }
 
-        public async Task<IAlpacaDataSubscription> SubscribeAsync(string symbol, CancellationToken cancellationToken) {
+        public async Task<IAlpacaDataSubscription> SubscribeAsync(string symbol, CancellationToken cancellationToken = default) {
             await ConnectAndAuthorizeAsync(cancellationToken);
 
             _logger.LogDebug($"Current Auth Status: {_authStatus}");
 
-            _subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);
-            _subscription.Received += Subscription_Received;
+            var subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);
+            _logger.LogTrace($"Subscription: {JsonSerializer.Serialize(subscription)}");
+            subscription.Received += Subscription_Received;
 
-            if (!_subscription.Subscribed) {
-                await _alpacaDataStreamingClient.SubscribeAsync(_subscription, cancellationToken);
+            if (!subscription.Subscribed) {
+                await _alpacaDataStreamingClient.SubscribeAsync(subscription, cancellationToken = default);
             }
 
-            _subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);
+            subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);            
 
-            return _subscription;
+            return subscription;
         }
 
-        public async Task<IAlpacaDataSubscription> UnsubscribeAsync(string symbol, CancellationToken cancellationToken) {
+        public async Task<IAlpacaDataSubscription> UnsubscribeAsync(string symbol, CancellationToken cancellationToken = default) {
             await ConnectAndAuthorizeAsync(cancellationToken);
 
-            await _alpacaDataStreamingClient.UnsubscribeAsync(_subscription, cancellationToken);
+            var subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);
+            await _alpacaDataStreamingClient.UnsubscribeAsync(subscription, cancellationToken);
 
-            _subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);
+            subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);
 
-            return _subscription;
+            return subscription;
         }
 
-        public async Task<IAlpacaDataSubscription> GetSubscriptionAsync(string symbol, CancellationToken cancellationToken) {
+        public async Task<IAlpacaDataSubscription> GetSubscriptionAsync(string symbol, CancellationToken cancellationToken = default) {
             await ConnectAndAuthorizeAsync(cancellationToken);
 
-            _subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);
+            var subscription = _alpacaDataStreamingClient.GetMinuteBarSubscription(symbol);
 
-            return _subscription;
+            return subscription;
         }
 
         private async Task<AuthStatus> ConnectAndAuthorizeAsync(CancellationToken cancellationToken) {
@@ -93,10 +100,17 @@ namespace AlpacaHerder.Server.Services {
             _isConnected = true;
         }
 
-        private void Subscription_Received(IBar obj) {
+        private async void Subscription_Received(IBar obj) {
             _logger.LogInformation($"{obj.Symbol}({obj.TimeUtc}) - O: {obj.Open} H: {obj.High} L: {obj.Low} C: {obj.Close}");
 
-            // TODO: fire back data to ui
+            await _broadcastHub.SendMessage(new MinuteBar {
+                TimeUtc = obj.TimeUtc,
+                Symbol = obj.Symbol,
+                Open = obj.Open,
+                High = obj.High,
+                Low = obj.Low,
+                Close = obj.Close
+            });
         }
     }
 }

@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Alpaca.Markets" Version="5.1.0" />
+    <PackageReference Include="Alpaca.Markets.Extensions" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 </Project>

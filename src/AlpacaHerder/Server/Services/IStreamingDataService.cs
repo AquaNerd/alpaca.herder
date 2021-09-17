@@ -9,11 +9,11 @@ namespace AlpacaHerder.Server.Services {
 
         AuthStatus AuthStatus { get; }
 
-        Task<IAlpacaDataSubscription> SubscribeAsync(string symbol, CancellationToken cancellationToken);
+        Task<IAlpacaDataSubscription> SubscribeAsync(string symbol, CancellationToken cancellationToken = default);
 
-        Task<IAlpacaDataSubscription> UnsubscribeAsync(string symbol, CancellationToken cancellationToken);
+        Task<IAlpacaDataSubscription> UnsubscribeAsync(string symbol, CancellationToken cancellationToken = default);
 
-        Task<IAlpacaDataSubscription> GetSubscriptionAsync(string symbol, CancellationToken cancellationToken);
+        Task<IAlpacaDataSubscription> GetSubscriptionAsync(string symbol, CancellationToken cancellationToken = default);
 
     }
 }

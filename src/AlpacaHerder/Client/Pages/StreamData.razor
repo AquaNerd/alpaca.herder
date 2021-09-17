@@ -1,0 +1,52 @@
+﻿@page "/streamdata"
+
+@using AlpacaHerder.Shared
+@using Microsoft.AspNetCore.SignalR.Client
+
+@inject NavigationManager NavigationManager
+
+<h3>Stream Data</h3>
+<br />
+
+Message: @message
+
+@if (data != null) {
+	<table>
+		<tbody>
+			<tr>Symbol <td>@data.Symbol</td></tr>
+			<tr>Bid <td>@data.BidPrice (@data.BidSize)</td></tr>
+			<tr>Ask <td>@data.AskPrice (@data.AskSize)</td></tr>
+			<tr>RefreshTime <td>@data.TimestampUTC</td></tr>
+		</tbody>	
+	</table>
+}
+
+@code {
+	private string message = "waiting...";
+	private Quote data;
+	private HubConnection hubConnection;
+
+	protected override async Task OnInitializedAsync() {
+
+		hubConnection = new HubConnectionBuilder()
+			.WithUrl(NavigationManager.ToAbsoluteUri("/quotehub"))
+			.Build();
+
+		hubConnection.On<Quote>("ReceiveMessage", (Data) => {
+			message = $"Message Received at {DateTime.Now}";
+			data = Data;
+			InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
+		});
+
+		await hubConnection.StartAsync();
+	}
+
+	public bool IsConnected
+		=> hubConnection.State == HubConnectionState.Connected;
+
+	public void Dispose() {
+		if (hubConnection is not null) {
+			_ = hubConnection.DisposeAsync();
+		}
+	}
+}

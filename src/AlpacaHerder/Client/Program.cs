@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AlpacaHerder.Client {
@@ -14,9 +10,15 @@ namespace AlpacaHerder.Client {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            ConfigureServices(builder.Services, builder.HostEnvironment);
+                        
             await builder.Build().RunAsync();
+        }
+
+        public static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvironment env) {
+
+            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(env.BaseAddress) });
+
         }
     }
 }
