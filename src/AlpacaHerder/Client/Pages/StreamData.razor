@@ -3,7 +3,7 @@
 @using AlpacaHerder.Shared
 @using Microsoft.AspNetCore.SignalR.Client
 
-@inject HubConnection HubConnection
+@inject NavigationManager navigationManager
 
 <h3>Stream Data</h3>
 <br />
@@ -22,27 +22,32 @@ Message: @message
 }
 
 @code {
-	private string message = "waiting...";
-	private Quote data;
-	private HubConnection hubConnection;
+    private string message = "waiting...";
+    private Quote data;
+    private HubConnection hubConnection;
 
-	protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync() {
 
-		HubConnection.On<Quote>("QuoteReceived", (Data) => {
-			message = $"Quote Received at {DateTime.Now}";
-			data = Data;
-			InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
-		});
+        hubConnection = new HubConnectionBuilder()
+                    .WithUrl(navigationManager.ToAbsoluteUri("/quotehub"))
+                    .WithAutomaticReconnect()
+                    .Build();
 
-		await hubConnection.StartAsync();
-	}
+        hubConnection.On<Quote>("QuoteReceived", (Data) => {
+            message = $"Quote Received at {DateTime.Now}";
+            data = Data;
+            InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
+        });
 
-	public bool IsConnected
-		=> hubConnection.State == HubConnectionState.Connected;
+        await hubConnection.StartAsync();
+    }
 
-	public void Dispose() {
-		if (hubConnection is not null) {
-			_ = hubConnection.DisposeAsync();
-		}
-	}
+    public bool IsConnected
+        => hubConnection.State == HubConnectionState.Connected;
+
+    public void Dispose() {
+        if (hubConnection is not null) {
+            _ = hubConnection.DisposeAsync();
+        }
+    }
 }
