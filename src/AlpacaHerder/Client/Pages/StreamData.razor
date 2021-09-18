@@ -3,7 +3,7 @@
 @using AlpacaHerder.Shared
 @using Microsoft.AspNetCore.SignalR.Client
 
-@inject NavigationManager NavigationManager
+@inject HubConnection HubConnection
 
 <h3>Stream Data</h3>
 <br />
@@ -28,12 +28,8 @@ Message: @message
 
 	protected override async Task OnInitializedAsync() {
 
-		hubConnection = new HubConnectionBuilder()
-			.WithUrl(NavigationManager.ToAbsoluteUri("/quotehub"))
-			.Build();
-
-		hubConnection.On<Quote>("ReceiveMessage", (Data) => {
-			message = $"Message Received at {DateTime.Now}";
+		HubConnection.On<Quote>("QuoteReceived", (Data) => {
+			message = $"Quote Received at {DateTime.Now}";
 			data = Data;
 			InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
 		});

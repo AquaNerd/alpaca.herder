@@ -38,7 +38,7 @@ namespace AlpacaHerder.Server {
             services.Configure<AlpacaConfig>(Configuration.GetSection(nameof(AlpacaConfig)));
 
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-            services.AddSingleton<QuoteHub>();
+            services.AddSingleton<IQuoteHub, QuoteHub>();
             services.AddSingleton<IStreamingDataService, StreamingQuoteDataService>();
 
             services.AddControllersWithViews();

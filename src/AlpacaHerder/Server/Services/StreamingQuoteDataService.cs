@@ -2,6 +2,7 @@
 using AlpacaHerder.Server.Configuration;
 using AlpacaHerder.Server.Hubs;
 using AlpacaHerder.Shared;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -16,12 +17,12 @@ namespace AlpacaHerder.Server.Services {
         private readonly IAlpacaDataStreamingClient _alpacaDataStreamingClient;
         private bool _isConnected;
         private AuthStatus _authStatus;
-        private QuoteHub _broadcastHub;
+        private readonly IQuoteHub _hub;
 
         bool IStreamingDataService.IsConnected { get => _isConnected; }
         public AuthStatus AuthStatus { get => _authStatus; }
 
-        public StreamingQuoteDataService(ILogger<StreamingQuoteDataService> logger, IOptions<AlpacaConfig> alpacaConfig, QuoteHub hub) {
+        public StreamingQuoteDataService(ILogger<StreamingQuoteDataService> logger, IOptions<AlpacaConfig> alpacaConfig, IQuoteHub hub) {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             _alpacaConfig = alpacaConfig.Value;// ?? throw new ArgumentNullException(nameof(alpacaConfig));
@@ -35,7 +36,7 @@ namespace AlpacaHerder.Server.Services {
             _alpacaDataStreamingClient.SocketOpened += _alpacaDataStreamingClient_SocketOpened;
             _alpacaDataStreamingClient.SocketClosed += _alpacaDataStreamingClient_SocketClosed;
 
-            _broadcastHub = hub;
+            _hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }
 
         public async Task<IAlpacaDataSubscription> SubscribeAsync(string symbol, CancellationToken cancellationToken = default) {
@@ -52,7 +53,7 @@ namespace AlpacaHerder.Server.Services {
 
             subscription = _alpacaDataStreamingClient.GetQuoteSubscription(symbol);
 
-            await _broadcastHub.SendMessage(new Quote {
+            await _hub.QuoteReceived(new Quote {
                 TimestampUTC = DateTime.UtcNow,
                 Symbol = "slqt",
                 BidPrice = 10.01M,
@@ -110,7 +111,7 @@ namespace AlpacaHerder.Server.Services {
         private async void Subscription_Received(IQuote obj) {
             _logger.LogInformation($"{obj.Symbol}({obj.TimestampUtc}) - Bid: {obj.BidPrice}({obj.BidSize}) Ask: {obj.AskPrice}({obj.AskSize})");
 
-            await _broadcastHub.SendMessage(new Quote {
+            await _hub.QuoteReceived(new Quote {
                 TimestampUTC = obj.TimestampUtc,
                 Symbol = obj.Symbol,
                 BidPrice = obj.BidPrice,
