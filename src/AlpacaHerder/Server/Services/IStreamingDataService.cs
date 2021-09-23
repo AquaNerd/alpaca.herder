@@ -1,10 +1,11 @@
 ﻿using Alpaca.Markets;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AlpacaHerder.Server.Services {
-    public interface IStreamingDataService {
+    public interface IStreamingDataService : IAsyncDisposable {
 
         Task ListenAsync(string symbol, CancellationToken cancellationToken = default);
 

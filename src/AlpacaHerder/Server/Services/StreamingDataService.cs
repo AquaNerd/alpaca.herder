@@ -38,19 +38,22 @@ namespace AlpacaHerder.Server.Services {
                 await _client.SubscribeAsync(subscriptions, cancellationToken);
 
                 await _hub.Subscribed();
+
+                GetSubscriptions(symbol);
             }
         }
 
         public async Task UnListenAsync(string symbol, CancellationToken cancellationToken = default) {
-            _tradeSubscription = _client.GetTradeSubscription(symbol);
-            _quoteSubscription = _client.GetQuoteSubscription(symbol);
-            var subscriptions = new List<IAlpacaDataSubscription> { _tradeSubscription, _quoteSubscription };
+            var subscriptions = GetSubscriptions(symbol);
+            UnHookupEventsUponSubscribe();
 
             if (subscriptions.All(s => s.Subscribed)) {
 
                 await _client.UnsubscribeAsync(subscriptions, cancellationToken);
 
                 await _hub.UnSubscribed();
+
+                GetSubscriptions(symbol);
             }
         }
 
@@ -60,6 +63,14 @@ namespace AlpacaHerder.Server.Services {
 
             _quoteSubscription.Received += QuoteSubscription_Received;
             _logger.LogDebug($"{string.Join(", ", _quoteSubscription.Streams)} - Hooked up {nameof(QuoteSubscription_Received)} to Subscription Received Event");
+        }
+
+        private void UnHookupEventsUponSubscribe() {
+            _tradeSubscription.Received -= TradeSubscription_Received;
+            _logger.LogDebug($"{string.Join(", ", _tradeSubscription.Streams)} - UnHooked {nameof(TradeSubscription_Received)} to Subscription Received Event");
+
+            _quoteSubscription.Received -= QuoteSubscription_Received;
+            _logger.LogDebug($"{string.Join(", ", _quoteSubscription.Streams)} - UnHooked {nameof(QuoteSubscription_Received)} to Subscription Received Event");
         }
 
         public List<IAlpacaDataSubscription> GetSubscriptions(string symbol) {

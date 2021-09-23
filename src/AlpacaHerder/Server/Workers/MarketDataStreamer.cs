@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace AlpacaHerder.Server.Workers {
-    public class MarketDataStreamer : IHostedService {
+    public class MarketDataStreamer : IHostedService, IAsyncDisposable {
         private readonly ILogger<MarketDataStreamer> _logger;
         private readonly IStreamingDataService _streamingDataService;
 
@@ -25,6 +25,10 @@ namespace AlpacaHerder.Server.Workers {
         public async Task StopAsync(CancellationToken cancellationToken) {
             _logger.LogDebug($"{nameof(MarketDataStreamer)} - {nameof(StopAsync)} Hit");
             await _streamingDataService.UnListenAsync("spy", cancellationToken);
+        }
+
+        public async ValueTask DisposeAsync() {
+            await _streamingDataService.DisposeAsync();
         }
     }
 }
