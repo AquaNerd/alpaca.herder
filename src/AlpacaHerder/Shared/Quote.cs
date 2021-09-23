@@ -1,17 +1,17 @@
 ﻿using System;
 
 namespace AlpacaHerder.Shared {
-    public class Quote {
-        public string Symbol { get; set; }
+    public record Quote {
+        public string Symbol { get; init; }
 
-        public ulong BidSize { get; set; }
+        public ulong BidSize { get; init; }
 
-        public decimal BidPrice { get; set; }
+        public decimal BidPrice { get; init; }
 
-        public ulong AskSize { get; set; }
+        public ulong AskSize { get; init; }
 
-        public decimal AskPrice { get; set; }
+        public decimal AskPrice { get; init; }
 
-        public DateTime TimestampUTC { get; set; }
+        public DateTime TimestampUtc { get; init; }
     }
 }

@@ -1,19 +1,16 @@
 ﻿using Alpaca.Markets;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AlpacaHerder.Server.Services {
     public interface IStreamingDataService {
 
-        bool IsConnected { get; }
+        Task ListenAsync(string symbol, CancellationToken cancellationToken = default);
 
-        AuthStatus AuthStatus { get; }
+        Task UnListenAsync(string symbol, CancellationToken cancellationToken = default);
 
-        Task<IAlpacaDataSubscription> SubscribeAsync(string symbol, CancellationToken cancellationToken = default);
-
-        Task<IAlpacaDataSubscription> UnsubscribeAsync(string symbol, CancellationToken cancellationToken = default);
-
-        Task<IAlpacaDataSubscription> GetSubscriptionAsync(string symbol, CancellationToken cancellationToken = default);
+        List<IAlpacaDataSubscription> GetSubscriptions(string symbol);
 
     }
 }

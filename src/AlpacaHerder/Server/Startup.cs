@@ -1,6 +1,8 @@
+using Alpaca.Markets;
 using AlpacaHerder.Server.Configuration;
 using AlpacaHerder.Server.Hubs;
 using AlpacaHerder.Server.Services;
+using AlpacaHerder.Server.Workers;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Reflection;
 
@@ -25,7 +28,7 @@ namespace AlpacaHerder.Server {
 
             services
                 .AddSignalR()
-                .AddHubOptions<QuoteHub>(options => { 
+                .AddHubOptions<MarketDataHub>(options => { 
                     options.EnableDetailedErrors = true; 
                 });
 
@@ -33,19 +36,26 @@ namespace AlpacaHerder.Server {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
-
+            
             services.AddOptions();
             services.Configure<AlpacaConfig>(Configuration.GetSection(nameof(AlpacaConfig)));
 
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-            services.AddSingleton<IQuoteHub, QuoteHub>();
-            services.AddSingleton<IStreamingDataService, StreamingQuoteDataService>();
 
             services.AddControllersWithViews();
             services
-                .AddRazorPages()
-                .AddRazorRuntimeCompilation();
-            
+               .AddRazorPages()
+               .AddRazorRuntimeCompilation();
+
+            services.AddSingleton<IMarketDataHub, MarketDataHub>();
+            services.AddSingleton<IAlpacaDataStreamingClient>(sp => {
+                var config = sp.GetService<IOptions<AlpacaConfig>>();
+                return Alpaca.Markets.Environments.Paper.GetAlpacaDataStreamingClient(
+                    new SecretKey(config.Value.ApiKey, config.Value.ApiSecret));
+            });
+            services.AddSingleton<IStreamingDataService, StreamingDataService>();
+
+            services.AddHostedService<MarketDataStreamer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,8 +80,7 @@ namespace AlpacaHerder.Server {
             app.UseEndpoints(endpoints => {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapHub<QuoteHub>("/quotehub");
-                endpoints.MapHub<MinuteBarHub>("/minutebarhub");
+                endpoints.MapHub<MarketDataHub>("/marketdatahub");
                 endpoints.MapFallbackToFile("index.html");
             });
         }

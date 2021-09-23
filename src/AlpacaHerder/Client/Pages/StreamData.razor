@@ -10,32 +10,54 @@
 
 Message: @message
 
-@if (data != null) {
-	<table>
+@if (quote != null) {
+	@*<table>
 		<tbody>
 			<tr>Symbol <td>@data.Symbol</td></tr>
 			<tr>Bid <td>@data.BidPrice (@data.BidSize)</td></tr>
 			<tr>Ask <td>@data.AskPrice (@data.AskSize)</td></tr>
-			<tr>RefreshTime <td>@data.TimestampUTC</td></tr>
+			<tr>RefreshTime <td>@data.TimestampUtc</td></tr>
 		</tbody>	
-	</table>
+	</table>*@
+    <span>Quote: @quote.ToString()</span>
+}
+
+@if (trade != null) {
+    <span>Trade: @trade.ToString()</span>
 }
 
 @code {
     private string message = "waiting...";
-    private Quote data;
+    private Quote quote;
+    private Trade trade;
     private HubConnection hubConnection;
 
     protected override async Task OnInitializedAsync() {
 
         hubConnection = new HubConnectionBuilder()
-                    .WithUrl(navigationManager.ToAbsoluteUri("/quotehub"))
+                    .WithUrl(navigationManager.ToAbsoluteUri("/marketdatahub"))
                     .WithAutomaticReconnect()
                     .Build();
 
-        hubConnection.On<Quote>("QuoteReceived", (Data) => {
+        hubConnection.On<Quote>("QuoteReceived", (Quote) => {
             message = $"Quote Received at {DateTime.Now}";
-            data = Data;
+            quote = Quote;
+            InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
+        });
+
+        hubConnection.On<Trade>("TradeReceived", (Trade) => {
+            message = $"Trade Received at {DateTime.Now}";
+            trade = Trade;
+            InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
+        });
+
+        hubConnection.On<string>("Subscribed", (Message) => {
+            message = Message;
+            InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
+        });
+
+        hubConnection.On<string>("UnSubscribed", (Message) => {
+            message = Message;
             InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
         });
 
