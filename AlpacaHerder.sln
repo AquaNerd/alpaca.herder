@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStreamer", "src\AlpacaHerder\TestStreamer\TestStreamer.csproj", "{3B84D761-9DEA-4D11-BE09-640DBEA64C52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B84D761-9DEA-4D11-BE09-640DBEA64C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B84D761-9DEA-4D11-BE09-640DBEA64C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B84D761-9DEA-4D11-BE09-640DBEA64C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B84D761-9DEA-4D11-BE09-640DBEA64C52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{6EC06683-1EBE-4744-9C1A-DAAAA19087DE} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
 		{AA8FBAEF-37AC-4D28-A685-405B53AB4C45} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
 		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
+		{3B84D761-9DEA-4D11-BE09-640DBEA64C52} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00DDB757-9826-4742-8A9A-564FB88F10F2}

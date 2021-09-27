@@ -26,7 +26,7 @@ namespace AlpacaHerder.Server.Controllers {
             try {
                 var snapshot = await _mediator.Send(new GetPrice(symbol));
 
-                var data = new MarketData { Symbol = snapshot.Symbol, LastPrice = snapshot.Trade.Price };
+                var data = new MarketData(snapshot.Symbol, snapshot.Trade.Price);
 
                 return Ok(data);
             } catch (Exception ex) {

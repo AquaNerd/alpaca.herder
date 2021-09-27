@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AlpacaHerder.Server.Services {
+namespace TestStreamer {
     public interface IStreamingDataService : IAsyncDisposable {
 
         Task ListenAsync(string symbol, CancellationToken cancellationToken = default);

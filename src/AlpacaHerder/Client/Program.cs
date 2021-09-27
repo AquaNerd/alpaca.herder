@@ -24,7 +24,7 @@ namespace AlpacaHerder.Client {
             services.AddSingleton<HubConnection>(sp => {
                 var navigationManager = sp.GetRequiredService<NavigationManager>();
                 return new HubConnectionBuilder()
-                    .WithUrl(navigationManager.ToAbsoluteUri("/quotehub"))
+                    .WithUrl(navigationManager.ToAbsoluteUri("/marketdatahub"))
                     .WithAutomaticReconnect()
                     .Build();
             });
