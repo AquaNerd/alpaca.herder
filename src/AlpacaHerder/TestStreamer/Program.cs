@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using TestStreamer.Configuration;
 
 namespace TestStreamer {
@@ -21,7 +22,9 @@ namespace TestStreamer {
                 _logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger<Program>();
 
                 var service = serviceProvider.GetService<IStreamingDataService>();
-                service.ListenAsync("SPY", default).GetAwaiter().GetResult();
+                Task.Run(() => {
+                    service.ListenAsync("SPY", default).GetAwaiter().GetResult();
+                });
 
                 Console.ReadKey();
 

@@ -124,6 +124,10 @@ namespace AlpacaHerder.Server.Services {
         }
         
         public async ValueTask DisposeAsync() {
+            var subscriptions = new List<IAlpacaDataSubscription>();
+            subscriptions.Add(_quoteSubscription);
+            subscriptions.Add(_tradeSubscription);
+            await _client.UnsubscribeAsync(subscriptions);
             await _client.DisconnectAsync(default);
             _authStatus = AuthStatus.Unauthorized;
             _logger.LogTrace($"AuthStatus: {_authStatus}");
