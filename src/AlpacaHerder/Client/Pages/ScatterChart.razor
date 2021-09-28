@@ -1,8 +1,10 @@
-﻿@using Plotly.Blazor.LayoutLib
+﻿@page "/scatter"
+
+@using Plotly.Blazor.LayoutLib
 @using Plotly.Blazor.Traces.ScatterLib
 @using System.Diagnostics
 
-<PlotlyChart style="height: 60vh; min-height: 350px" @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart" />
+<PlotlyChart style="width:600px; height:500px;" @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart" />
 
 <div class="text-right">
     <button type="button" class="btn btn-primary" @onclick="() => chart.Clear()">Clear</button>
