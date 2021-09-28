@@ -2,6 +2,10 @@
 
 @using AlpacaHerder.Shared
 @using Microsoft.AspNetCore.SignalR.Client
+@using Plotly.Blazor.LayoutLib
+@using Plotly.Blazor.Traces.BoxLib.MarkerLib
+@using Plotly.Blazor.Traces.ScatterLib
+@using System.Drawing
 
 @inject NavigationManager navigationManager
 
@@ -10,29 +14,71 @@
 
 Message: @message
 
-@if (quote != null) {
-	@*<table>
-		<tbody>
-			<tr>Symbol <td>@data.Symbol</td></tr>
-			<tr>Bid <td>@data.BidPrice (@data.BidSize)</td></tr>
-			<tr>Ask <td>@data.AskPrice (@data.AskSize)</td></tr>
-			<tr>RefreshTime <td>@data.TimestampUtc</td></tr>
-		</tbody>	
-	</table>*@
-    <span>Quote: @quote.ToString()</span>
-}
+<br/>
 
-@if (trade != null) {
-    <span>Trade: @trade.ToString()</span>
-}
+<PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart" />
 
 @code {
     private string message = "waiting...";
-    private Quote quote;
-    private Trade trade;
     private HubConnection hubConnection;
 
+    PlotlyChart chart;
+
+    Config config = new Config
+    {
+        Responsive = true
+    };
+
+    Layout layout = new Layout
+    {
+        Title = new Title
+        {
+            Text = "Scatter"
+        },
+        YAxis = new List<YAxis>
+        {
+            new YAxis
+            {
+                Title = new Plotly.Blazor.LayoutLib.YAxisLib.Title
+                {
+                    Text = "Scatter Unit"
+                }
+            }
+        }
+    };
+
+    Scatter askQuoteData = new Scatter {
+        Name = "Ask Prices",
+        Mode = ModeFlag.Markers,
+        Marker = new Marker {
+            Symbol = Plotly.Blazor.Traces.ScatterLib.MarkerLib.SymbolEnum.Circle, 
+            Color = Color.Red,
+            AutoColorScale = false,
+        },
+        X = new List<object>(),
+        Y = new List<object>()
+    };
+    Scatter bidQuoteData = new Scatter {
+        Name = "Bid Prices",
+        Mode = ModeFlag.Markers,
+        Marker = new Marker{Symbol = Plotly.Blazor.Traces.ScatterLib.MarkerLib.SymbolEnum.CircleOpen, Color = Color.Blue},
+        X = new List<object>(),
+        Y = new List<object>()
+    };
+
+    Scatter tradeData = new Scatter {
+        Name = "Bid Prices",
+        Mode = ModeFlag.Markers,
+        Marker = new Marker{Symbol = Plotly.Blazor.Traces.ScatterLib.MarkerLib.SymbolEnum.Cross, Color = Color.Pink},
+        X = new List<object>(),
+        Y = new List<object>()
+    };
+
+    IList<ITrace> data = new List<ITrace>();
+
     protected override async Task OnInitializedAsync() {
+
+        data.Add(askQuoteData);
 
         hubConnection = new HubConnectionBuilder()
                     .WithUrl(navigationManager.ToAbsoluteUri("/marketdatahub"))
@@ -41,14 +87,31 @@ Message: @message
 
         hubConnection.On<Quote>("QuoteReceived", (Quote) => {
             message = $"Quote Received at {DateTime.Now}";
-            quote = Quote;
-            InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
+            var updateTriggered = false;
+
+            if (Quote.AskPrice > 0) {
+                askQuoteData.X.Add(Quote.TimestampUtc);
+                askQuoteData.Y.Add(Quote.AskPrice);
+                updateTriggered = true;
+            }
+
+            if (Quote.BidPrice > 0) {
+                bidQuoteData.X.Add(Quote.TimestampUtc);
+                bidQuoteData.Y.Add(Quote.BidPrice);
+                updateTriggered = true;
+            }
+
+            if (updateTriggered) {
+                chart.Update();
+            }
         });
 
         hubConnection.On<Trade>("TradeReceived", (Trade) => {
             message = $"Trade Received at {DateTime.Now}";
-            trade = Trade;
-            InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
+            StateHasChanged();
+
+            tradeData.X.Add(Trade.TimestampUtc);
+            tradeData.Y.Add(Trade.Price);
         });
 
         hubConnection.On<string>("Subscribed", (Message) => {

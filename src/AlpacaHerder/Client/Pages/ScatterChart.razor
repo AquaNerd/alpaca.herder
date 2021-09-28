@@ -4,7 +4,7 @@
 @using Plotly.Blazor.Traces.ScatterLib
 @using System.Diagnostics
 
-<PlotlyChart style="width:600px; height:500px;" @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart" />
+<PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart" />
 
 <div class="text-right">
     <button type="button" class="btn btn-primary" @onclick="() => chart.Clear()">Clear</button>
