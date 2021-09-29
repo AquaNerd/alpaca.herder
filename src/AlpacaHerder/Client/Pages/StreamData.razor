@@ -5,21 +5,23 @@
 @using Plotly.Blazor.LayoutLib
 @using Plotly.Blazor.Traces.BoxLib.MarkerLib
 @using Plotly.Blazor.Traces.ScatterLib
-@using System.Drawing
+@using Blazorise
+@using Config = Plotly.Blazor.Config
+@using Layout = Plotly.Blazor.Layout
+@using Title = Plotly.Blazor.LayoutLib.Title
+@using Color = System.Drawing.Color
 
 @inject NavigationManager navigationManager
 
 <h3>Stream Data</h3>
-<br />
-
-Message: @message
 
 <br/>
 
 <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart" />
 
 @code {
-    private string message = "waiting...";
+    [Inject] INotificationService NotificationService { get; set; }
+
     private HubConnection hubConnection;
 
     PlotlyChart chart;
@@ -29,19 +31,21 @@ Message: @message
         Responsive = true
     };
 
-    Layout layout = new Layout
-    {
-        Title = new Title
-        {
-            Text = "Scatter"
+    Layout layout = new Layout {
+        Title = new Title {
+            Text = "Streaming Market Price"
         },
-        YAxis = new List<YAxis>
-        {
-            new YAxis
-            {
-                Title = new Plotly.Blazor.LayoutLib.YAxisLib.Title
-                {
-                    Text = "Scatter Unit"
+        YAxis = new List<YAxis> {
+            new YAxis {
+                Title = new Plotly.Blazor.LayoutLib.YAxisLib.Title {
+                    Text = "Price"
+                }
+            }
+        },
+        XAxis = new List<XAxis> {
+            new XAxis {
+                Title = new Plotly.Blazor.LayoutLib.XAxisLib.Title {
+                    Text = "Timestamp UTC"
                 }
             }
         }
@@ -58,6 +62,7 @@ Message: @message
         X = new List<object>(),
         Y = new List<object>()
     };
+
     Scatter bidQuoteData = new Scatter {
         Name = "Bid Prices",
         Mode = ModeFlag.Markers,
@@ -88,7 +93,6 @@ Message: @message
                     .Build();
 
         hubConnection.On<Quote>("QuoteReceived", (Quote) => {
-            message = $"Quote Received at {DateTime.Now}";
             var updateTriggered = false;
 
             if (Quote.AskPrice > 0) {
@@ -109,20 +113,17 @@ Message: @message
         });
 
         hubConnection.On<Trade>("TradeReceived", (Trade) => {
-            message = $"Trade Received at {DateTime.Now}";
-            StateHasChanged();
-
             tradeData.X.Add(Trade.TimestampUtc);
             tradeData.Y.Add(Trade.Price);
+
+            ShowTradeNotification(Trade);
         });
 
         hubConnection.On<string>("Subscribed", (Message) => {
-            message = Message;
             InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
         });
 
         hubConnection.On<string>("UnSubscribed", (Message) => {
-            message = Message;
             InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
         });
 
@@ -137,4 +138,7 @@ Message: @message
             _ = hubConnection.DisposeAsync();
         }
     }
+
+    Task ShowTradeNotification(Trade data)
+        => NotificationService.Success( $"{data}", "Trade Occurred" );
 }
