@@ -79,6 +79,8 @@ Message: @message
     protected override async Task OnInitializedAsync() {
 
         data.Add(askQuoteData);
+        data.Add(bidQuoteData);
+        data.Add(tradeData);
 
         hubConnection = new HubConnectionBuilder()
                     .WithUrl(navigationManager.ToAbsoluteUri("/marketdatahub"))
