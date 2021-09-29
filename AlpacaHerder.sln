@@ -22,7 +22,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestStreamer", "src\AlpacaHerder\TestStreamer\TestStreamer.csproj", "{3B84D761-9DEA-4D11-BE09-640DBEA64C52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestStreamer", "src\AlpacaHerder\TestStreamer\TestStreamer.csproj", "{3B84D761-9DEA-4D11-BE09-640DBEA64C52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{78C697CC-3737-4491-A5B0-F81ED523B44E}"
+	ProjectSection(SolutionItems) = preProject
+		docs\img\MarketDataScreen.png = docs\img\MarketDataScreen.png
+		docs\img\StreamingDataScreen.png = docs\img\StreamingDataScreen.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +61,7 @@ Global
 		{AA8FBAEF-37AC-4D28-A685-405B53AB4C45} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
 		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
 		{3B84D761-9DEA-4D11-BE09-640DBEA64C52} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
+		{78C697CC-3737-4491-A5B0-F81ED523B44E} = {447638F6-0ABE-430F-8244-41B56E1148F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00DDB757-9826-4742-8A9A-564FB88F10F2}

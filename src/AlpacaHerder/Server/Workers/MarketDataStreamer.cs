@@ -18,13 +18,13 @@ namespace AlpacaHerder.Server.Workers {
 
         public async Task StartAsync(CancellationToken cancellationToken) {
             _logger.LogDebug($"{nameof(MarketDataStreamer)} - {nameof(StartAsync)} Hit");
-            await _streamingDataService.ListenAsync("SPY", cancellationToken);
+            await _streamingDataService.ListenAsync("AAPL", cancellationToken);
             
         }
 
         public async Task StopAsync(CancellationToken cancellationToken) {
             _logger.LogDebug($"{nameof(MarketDataStreamer)} - {nameof(StopAsync)} Hit");
-            await _streamingDataService.UnListenAsync("SPY", cancellationToken);
+            await _streamingDataService.UnListenAsync("AAPL", cancellationToken);
         }
 
         public async ValueTask DisposeAsync() {
