@@ -9,7 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.development.json">
-      <TransformOnBuild>true</TransformOnBuild>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -35,6 +34,6 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\AlpacaHerder.Shared.csproj" />
+    <ProjectReference Include="..\..\App\AlpacaHerder.Shared\AlpacaHerder.Shared.csproj" />
   </ItemGroup>
 </Project>

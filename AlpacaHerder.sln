@@ -1,15 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpacaHerder.Server", "src\AlpacaHerder\Server\AlpacaHerder.Server.csproj", "{6EC06683-1EBE-4744-9C1A-DAAAA19087DE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpacaHerder.Client", "src\AlpacaHerder\Client\AlpacaHerder.Client.csproj", "{AA8FBAEF-37AC-4D28-A685-405B53AB4C45}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpacaHerder.Shared", "src\AlpacaHerder\Shared\AlpacaHerder.Shared.csproj", "{3EA94431-D699-4D5A-AB2D-1D23A3DD7012}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{447638F6-0ABE-430F-8244-41B56E1148F2}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,13 +16,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestStreamer", "src\AlpacaHerder\TestStreamer\TestStreamer.csproj", "{3B84D761-9DEA-4D11-BE09-640DBEA64C52}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{78C697CC-3737-4491-A5B0-F81ED523B44E}"
 	ProjectSection(SolutionItems) = preProject
 		docs\img\MarketDataScreen.png = docs\img\MarketDataScreen.png
 		docs\img\StreamingDataScreen.png = docs\img\StreamingDataScreen.png
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{E42E2A3F-7293-4FC8-B57F-3BA713C615F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A73DECE0-EB30-4A02-A2AE-DFFD680F467A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestStreamer", "src\Tests\TestStreamer\TestStreamer.csproj", "{D324597F-E520-4BA1-B434-CFDF36AD86EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpacaHerder", "src\App\AlpacaHerder\AlpacaHerder.csproj", "{1B3AD598-9551-4718-9B5C-BCD3FD755C7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpacaHerder.Client", "src\App\AlpacaHerder.Client\AlpacaHerder.Client.csproj", "{2CBABA92-E5D1-4F74-8AD0-A37F8BD245EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpacaHerder.Shared", "src\App\AlpacaHerder.Shared\AlpacaHerder.Shared.csproj", "{38F57307-B43B-454E-B70E-8E23F5FEFC3E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppHost", "AppHost", "{E6EBBD78-3DDC-4744-9543-0C6A8BFDB9A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpacaHerder.AppHost", "src\AppHost\AlpacaHerder.AppHost\AlpacaHerder.AppHost.csproj", "{52FDEFEE-54A6-454D-BD95-2BD14F6F72FD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlpacaHerder.ServiceDefaults", "src\AppHost\AlpacaHerder.ServiceDefaults\AlpacaHerder.ServiceDefaults.csproj", "{9874240D-3D66-4CBC-B09B-D0E6740BCD3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,32 +46,45 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6EC06683-1EBE-4744-9C1A-DAAAA19087DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EC06683-1EBE-4744-9C1A-DAAAA19087DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EC06683-1EBE-4744-9C1A-DAAAA19087DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EC06683-1EBE-4744-9C1A-DAAAA19087DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA8FBAEF-37AC-4D28-A685-405B53AB4C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA8FBAEF-37AC-4D28-A685-405B53AB4C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA8FBAEF-37AC-4D28-A685-405B53AB4C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA8FBAEF-37AC-4D28-A685-405B53AB4C45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B84D761-9DEA-4D11-BE09-640DBEA64C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B84D761-9DEA-4D11-BE09-640DBEA64C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B84D761-9DEA-4D11-BE09-640DBEA64C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B84D761-9DEA-4D11-BE09-640DBEA64C52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D324597F-E520-4BA1-B434-CFDF36AD86EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D324597F-E520-4BA1-B434-CFDF36AD86EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D324597F-E520-4BA1-B434-CFDF36AD86EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D324597F-E520-4BA1-B434-CFDF36AD86EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B3AD598-9551-4718-9B5C-BCD3FD755C7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3AD598-9551-4718-9B5C-BCD3FD755C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B3AD598-9551-4718-9B5C-BCD3FD755C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B3AD598-9551-4718-9B5C-BCD3FD755C7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CBABA92-E5D1-4F74-8AD0-A37F8BD245EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CBABA92-E5D1-4F74-8AD0-A37F8BD245EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CBABA92-E5D1-4F74-8AD0-A37F8BD245EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CBABA92-E5D1-4F74-8AD0-A37F8BD245EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F57307-B43B-454E-B70E-8E23F5FEFC3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F57307-B43B-454E-B70E-8E23F5FEFC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F57307-B43B-454E-B70E-8E23F5FEFC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F57307-B43B-454E-B70E-8E23F5FEFC3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52FDEFEE-54A6-454D-BD95-2BD14F6F72FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52FDEFEE-54A6-454D-BD95-2BD14F6F72FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52FDEFEE-54A6-454D-BD95-2BD14F6F72FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52FDEFEE-54A6-454D-BD95-2BD14F6F72FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9874240D-3D66-4CBC-B09B-D0E6740BCD3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9874240D-3D66-4CBC-B09B-D0E6740BCD3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9874240D-3D66-4CBC-B09B-D0E6740BCD3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9874240D-3D66-4CBC-B09B-D0E6740BCD3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6EC06683-1EBE-4744-9C1A-DAAAA19087DE} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
-		{AA8FBAEF-37AC-4D28-A685-405B53AB4C45} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
-		{3EA94431-D699-4D5A-AB2D-1D23A3DD7012} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
-		{3B84D761-9DEA-4D11-BE09-640DBEA64C52} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
 		{78C697CC-3737-4491-A5B0-F81ED523B44E} = {447638F6-0ABE-430F-8244-41B56E1148F2}
+		{E42E2A3F-7293-4FC8-B57F-3BA713C615F4} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
+		{A73DECE0-EB30-4A02-A2AE-DFFD680F467A} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
+		{D324597F-E520-4BA1-B434-CFDF36AD86EE} = {A73DECE0-EB30-4A02-A2AE-DFFD680F467A}
+		{1B3AD598-9551-4718-9B5C-BCD3FD755C7E} = {E42E2A3F-7293-4FC8-B57F-3BA713C615F4}
+		{2CBABA92-E5D1-4F74-8AD0-A37F8BD245EA} = {E42E2A3F-7293-4FC8-B57F-3BA713C615F4}
+		{38F57307-B43B-454E-B70E-8E23F5FEFC3E} = {E42E2A3F-7293-4FC8-B57F-3BA713C615F4}
+		{E6EBBD78-3DDC-4744-9543-0C6A8BFDB9A3} = {C71299C1-30ED-4B82-936B-7BEC3EF4CFFB}
+		{52FDEFEE-54A6-454D-BD95-2BD14F6F72FD} = {E6EBBD78-3DDC-4744-9543-0C6A8BFDB9A3}
+		{9874240D-3D66-4CBC-B09B-D0E6740BCD3C} = {E6EBBD78-3DDC-4744-9543-0C6A8BFDB9A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00DDB757-9826-4742-8A9A-564FB88F10F2}
