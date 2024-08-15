@@ -3,8 +3,8 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Alpaca.Markets" Version="5.1.1" />
-    <PackageReference Include="Alpaca.Markets.Extensions" Version="5.1.1" />
+    <PackageReference Include="Alpaca.Markets" Version="7.1.0" />
+    <PackageReference Include="Alpaca.Markets.Extensions" Version="7.1.0" />
   </ItemGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />

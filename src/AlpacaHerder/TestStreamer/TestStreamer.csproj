@@ -22,9 +22,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Alpaca.Markets" Version="5.1.1" />
-    <PackageReference Include="Alpaca.Markets.Extensions" Version="5.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Alpaca.Markets" Version="7.1.0" />
+    <PackageReference Include="Alpaca.Markets.Extensions" Version="7.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />

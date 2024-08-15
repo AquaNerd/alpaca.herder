@@ -3,8 +3,8 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Alpaca.Markets" Version="5.1.1" />
-    <PackageReference Include="Plotly.Blazor" Version="2.3.1" />
+    <PackageReference Include="Alpaca.Markets" Version="7.1.0" />
+    <PackageReference Include="Plotly.Blazor" Version="5.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.8" />
