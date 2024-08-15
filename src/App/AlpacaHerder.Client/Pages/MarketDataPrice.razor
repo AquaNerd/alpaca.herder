@@ -1,0 +1,30 @@
+﻿@page "/marketdata"
+@rendermode InteractiveWebAssembly
+
+<h3>Market Data @headerMessage</h3>
+
+<div class="input-group input-group-lg col-sm-3">
+    <input class="form-control" placeholder="symbol" id="symbol" name="symbol" type="text" @bind="symbol"/>
+    <div class="input-group-append">
+        <button class="btn btn-dark" @onclick="GetPrice">Get Price</button>
+    </div>
+</div>
+<br />
+<div>
+    @if (marketData != null) {
+        <span>Last Trade Price is currently @marketData.LastPrice</span>
+    }
+</div>
+
+@code {
+    [Inject]
+    private HttpClient httpClient { get; set; } = default!;
+    private MarketData marketData { get; set; } = default!;
+    private string symbol { get; set; } = default!;
+    private string headerMessage { get => string.IsNullOrWhiteSpace(symbol) ? "" : $"- {symbol.ToUpper()}"; }
+
+    private async Task GetPrice() {
+        marketData = await httpClient.GetFromJsonAsync<MarketData>($"api/marketdata/{symbol}") ?? default!;
+        await InvokeAsync(() => StateHasChanged());
+    }
+}
