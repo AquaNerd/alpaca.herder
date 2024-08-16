@@ -4,6 +4,7 @@ using AlpacaHerder.Configuration;
 using AlpacaHerder.Hubs;
 using AlpacaHerder.Services;
 using AlpacaHerder.Workers;
+using Blazr.RenderState.Server;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
 
@@ -41,6 +42,8 @@ builder.Services.AddSingleton<IStreamingDataService, StreamingDataService>();
 builder.Services.AddHostedService<MarketDataStreamer>();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("localhost:5178") });
+
+builder.AddBlazrRenderStateServerServices();
 
 builder.Services.AddControllers();
 

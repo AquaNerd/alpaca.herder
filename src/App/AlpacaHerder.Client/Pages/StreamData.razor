@@ -9,12 +9,9 @@
 
 @inject NavigationManager navigationManager
 
-<h3>Stream Data</h3>
-<br />
+<PageHeader HeaderText="Stream Data" PageTitle="Stream Data" />
 
-Message: @message
-
-<br/>
+<p>Message: @message</p>
 
 <PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart" />
 

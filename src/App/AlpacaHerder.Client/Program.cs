@@ -1,3 +1,4 @@
+using Blazr.RenderState.WASM;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -13,5 +14,6 @@ builder.Services.AddSingleton<HubConnection>(sp => {
         .WithAutomaticReconnect()
         .Build();
 });
+builder.AddBlazrRenderStateWASMServices();
 
 await builder.Build().RunAsync();
