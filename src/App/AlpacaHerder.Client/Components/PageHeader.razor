@@ -1,0 +1,10 @@
+﻿<PageTitle>@PageTitle</PageTitle>
+<RenderStateViewer Parent="this" />
+<h3><strong>@HeaderText</strong></h3>
+
+@code {
+    [Parameter]
+    public string PageTitle { get; set; } = string.Empty;
+    [Parameter]
+    public string HeaderText { get; set; } = string.Empty;
+}

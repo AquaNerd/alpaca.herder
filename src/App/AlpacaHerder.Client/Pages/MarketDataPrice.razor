@@ -1,7 +1,7 @@
 ﻿@page "/marketdata"
 @rendermode InteractiveWebAssembly
 
-<h3>Market Data @headerMessage</h3>
+<PageHeader HeaderText="@($"Market Data {headerMessage}")" PageTitle="Market Data" />
 
 <div class="input-group input-group-lg col-sm-3">
     <input class="form-control" placeholder="symbol" id="symbol" name="symbol" type="text" @bind="symbol"/>

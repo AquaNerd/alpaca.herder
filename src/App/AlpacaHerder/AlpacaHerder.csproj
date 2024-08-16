@@ -13,10 +13,10 @@
 
 		<PackageReference Include="Alpaca.Markets.Extensions" Version="7.1.0" />
 		<PackageReference Include="MediatR" Version="12.4.0" />
-		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.8" />
 		<PackageReference Include="Plotly.Blazor" Version="5.1.1" />
+		<PackageReference Include="Blazr.RenderState.Server" Version="1.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
