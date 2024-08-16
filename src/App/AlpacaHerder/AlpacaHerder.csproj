@@ -7,9 +7,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\AlpacaHerder.ServiceDefaults\AlpacaHerder.ServiceDefaults.csproj" />
-		<ProjectReference Include="..\..\AlpacaHerderOld\Shared\AlpacaHerder.Shared.csproj" />
+		<ProjectReference Include="..\..\AppHost\AlpacaHerder.ServiceDefaults\AlpacaHerder.ServiceDefaults.csproj" />
 		<ProjectReference Include="..\AlpacaHerder.Client\AlpacaHerder.Client.csproj" />
+		<ProjectReference Include="..\AlpacaHerder.Shared\AlpacaHerder.Shared.csproj" />
 
 		<PackageReference Include="Alpaca.Markets.Extensions" Version="7.1.0" />
 		<PackageReference Include="MediatR" Version="12.4.0" />
