@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\AlpacaHerderOld\Shared\AlpacaHerder.Shared.csproj" />
+	  <ProjectReference Include="..\AlpacaHerder.Shared\AlpacaHerder.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

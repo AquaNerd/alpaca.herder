@@ -110,7 +110,7 @@ Message: @message
 
         hubConnection.On<Trade>("TradeReceived", (Trade) => {
             message = $"Trade Received at {DateTime.Now}";
-            StateHasChanged();
+            InvokeAsync(() => StateHasChanged()).GetAwaiter().GetResult();
 
             tradeData.X.Add(Trade.TimestampUtc);
             tradeData.Y.Add(Trade.Price);
