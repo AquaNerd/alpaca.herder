@@ -1,10 +1,13 @@
 using Alpaca.Markets;
 using AlpacaHerder.Components;
 using AlpacaHerder.Configuration;
+using AlpacaHerder.GraphQL;
+using AlpacaHerder.GraphQL.Queries;
 using AlpacaHerder.Hubs;
 using AlpacaHerder.Services;
 using AlpacaHerder.Workers;
 using Blazr.RenderState.Server;
+using GraphQL;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
 
@@ -28,9 +31,6 @@ builder.Services.AddResponseCompression(options => {
 
 builder.Services.AddOptions();
 builder.Services.Configure<AlpacaConfig>(builder.Configuration.GetSection(nameof(AlpacaConfig)));
-
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-
 builder.Services.AddSingleton<IMarketDataHub, MarketDataHub>();
 builder.Services.AddSingleton<IAlpacaDataStreamingClient>(sp => {
     var config = sp.GetService<IOptions<AlpacaConfig>>();
@@ -42,10 +42,16 @@ builder.Services.AddSingleton<IStreamingDataService, StreamingDataService>();
 builder.Services.AddHostedService<MarketDataStreamer>();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("localhost:5178") });
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 builder.AddBlazrRenderStateServerServices();
 
 builder.Services.AddControllers();
+
+// Register GraphQL
+builder.Services.AddScoped<MarketDataQuery>();
+builder.Services.AddScoped<AppSchema>();
+builder.Services.AddGraphQL(graphQL => graphQL.AddSystemTextJson());
 
 var app = builder.Build();
 
@@ -60,8 +66,15 @@ if (app.Environment.IsDevelopment()) {
 
 app.UseHttpsRedirection();
 
+// Map Rest controllers
 app.MapControllers();
+
+// Map SignalR Hubs
 app.MapHub<MarketDataHub>("/marketdatahub");
+
+// Map GraphQL
+app.MapGraphQL<AppSchema>();
+app.MapGraphQLGraphiQL();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
