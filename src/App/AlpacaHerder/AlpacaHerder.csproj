@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
@@ -7,11 +7,26 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Handlers\**" />
+	  <Content Remove="Handlers\**" />
+	  <EmbeddedResource Remove="Handlers\**" />
+	  <None Remove="Handlers\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\..\AppHost\AlpacaHerder.ServiceDefaults\AlpacaHerder.ServiceDefaults.csproj" />
 		<ProjectReference Include="..\AlpacaHerder.Client\AlpacaHerder.Client.csproj" />
 		<ProjectReference Include="..\AlpacaHerder.Shared\AlpacaHerder.Shared.csproj" />
 
 		<PackageReference Include="Alpaca.Markets.Extensions" Version="7.1.0" />
+
+		<PackageReference Include="graphiql" Version="2.0.0" />
+
+		<PackageReference Include="GraphQL" Version="8.0.0" />
+
+		<PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="8.0.0" />
+
+		<PackageReference Include="GraphQL.Server.Ui.GraphiQL" Version="8.0.0" />
 		<PackageReference Include="MediatR" Version="12.4.0" />
 		<PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.8" />
@@ -20,7 +35,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Handlers\MarketData\" />
+	  <Folder Include="GraphQL\Commands\" />
 	</ItemGroup>
 
 </Project>
